@@ -1,3 +1,5 @@
 selenium
 2captcha-python
-
+python-dotenv
+webdriver-manager
+watchtower
