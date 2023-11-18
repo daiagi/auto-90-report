@@ -1,0 +1,3 @@
+selenium
+2captcha-python
+
