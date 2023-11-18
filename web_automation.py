@@ -5,10 +5,10 @@ from webdriver_manager.chrome import ChromeDriverManager
 from logger import logger
 
 
-from login_module import login  # Import the login function
-from fill_form_module import fill_form  # Import the fill_form function
-from select_new_application import select_new_application  # Import the select_new_application function
-# Load environment variables
+from login_module import login
+from fill_form_module import fill_form
+from select_new_application import select_new_application
+
 load_dotenv()
 
 # Environment Variables
