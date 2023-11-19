@@ -2,11 +2,12 @@ import os
 import logging
 import watchtower
 from logging.handlers import RotatingFileHandler
+from pathlib import Path
 
 def setup_logger():
     # Define log level
     log_level = logging.INFO
-
+    LOGS_DIR = Path(__file__).resolve().parent.parent / 'logs'
     # Create a logger
     logger = logging.getLogger('FormFiller')
     logger.setLevel(log_level)
@@ -16,7 +17,7 @@ def setup_logger():
 
     if environment == 'development':
         # In development, log to a file
-        handler = RotatingFileHandler('development.log', maxBytes=10000, backupCount=1)
+        handler = RotatingFileHandler(f"{LOGS_DIR}/development.log", maxBytes=10000, backupCount=1)
     else:
         # In production, log to AWS CloudWatch
         handler = watchtower.CloudWatchLogHandler()

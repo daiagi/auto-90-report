@@ -4,6 +4,9 @@ from selenium.webdriver.common.by import By
 from twocaptcha import TwoCaptcha
 from selenium.common.exceptions import TimeoutException
 from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.remote.webelement import WebElement
+from pathlib import Path
+
 from selenium.webdriver.support import expected_conditions as EC
 import time
 from logger import logger
@@ -19,11 +22,13 @@ CAPTCHA_INPUT_ID = 'captchaCodes'
 LOGIN_BUTTON_XPATH = "//button[.//span[contains(text(), ' L O G I N ')]]"
 INVALID_DATA_MESSAGE_XPATH = "//snack-bar-container/span[contains(text(), 'Invalid Data')]"
 
+DATA_DIR = Path(__file__).resolve().parent.parent / 'data'
 
 
-def save_captcha_image(element, filename="captcha.png"):
-    element.screenshot(filename)
-    return filename
+def save_captcha_image(element: WebElement, filename="captcha.png"):
+    path = f"{DATA_DIR}/{filename}"
+    element.screenshot(path)
+    return path
 
 
 def solve_captcha(image_path, api_key):
@@ -34,16 +39,19 @@ def solve_captcha(image_path, api_key):
     except Exception as e:
         print(f"Error solving CAPTCHA: {e}")
         return None
-    
+
+
 def navigate_to_login_page(driver):
     driver.get(f"{ROOT_URL}/#/login")
     logger.info("Navigated to the login page.")
+
 
 def fill_login_credentials(driver, email, password):
     time.sleep(2)  # Wait for elements to load
     driver.find_element(By.ID, EMAIL_INPUT_ID).send_keys(email)
     driver.find_element(By.ID, PASSWORD_INPUT_ID).send_keys(password)
     logger.debug("Email and password fields filled.")
+
 
 def enter_captcha_solution(driver, api_key_2captcha):
     captcha_image_element = driver.find_element(By.ID, CAPTCHA_IMAGE_ID)
@@ -58,6 +66,7 @@ def enter_captcha_solution(driver, api_key_2captcha):
     else:
         logger.error("Failed to get captcha solution.")
         return False
+
 
 def click_login_button(driver):
     login_button = driver.find_element(By.XPATH, LOGIN_BUTTON_XPATH)
@@ -75,8 +84,10 @@ def login(driver, email, password, api_key_2captcha, max_retries=5):
             click_login_button(driver)
 
             try:
-                WebDriverWait(driver, 3).until(EC.visibility_of_element_located((By.XPATH, INVALID_DATA_MESSAGE_XPATH)))
-                logger.warning(f"Invalid data error on attempt {attempt + 1}, retrying...")
+                WebDriverWait(driver, 3).until(EC.visibility_of_element_located(
+                    (By.XPATH, INVALID_DATA_MESSAGE_XPATH)))
+                logger.warning(
+                    f"Invalid data error on attempt {attempt + 1}, retrying...")
                 time.sleep(2)
                 continue
             except TimeoutException:
@@ -87,10 +98,10 @@ def login(driver, email, password, api_key_2captcha, max_retries=5):
                 logger.info("Login successful.")
                 return True
             except TimeoutException:
-                logger.warning(f"Captcha attempt {attempt + 1} failed, retrying...")
+                logger.warning(
+                    f"Captcha attempt {attempt + 1} failed, retrying...")
         else:
             continue
 
     logger.error("Maximum retries reached. Login failed.")
     return False
-
