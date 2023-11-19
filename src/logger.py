@@ -6,16 +6,17 @@ from pathlib import Path
 
 def setup_logger():
     # Define log level
-    log_level = logging.INFO
+    log_level = logging.DEBUG
     LOGS_DIR = Path(__file__).resolve().parent.parent / 'logs'
     # Create a logger
     logger = logging.getLogger('FormFiller')
     logger.setLevel(log_level)
 
     # Check if the environment is development or production
-    environment = os.getenv('ENVIRONMENT', 'development')
+    # environment = os.getenv('ENVIRONMENT', 'development')
+    environment = 'development'
 
-    if environment == 'development':
+    if environment != 'production':
         # In development, log to a file
         handler = RotatingFileHandler(f"{LOGS_DIR}/development.log", maxBytes=10000, backupCount=1)
     else:

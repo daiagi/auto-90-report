@@ -6,6 +6,8 @@ from selenium.webdriver.remote.webelement import WebElement
 
 import os
 from logger import logger
+from dotenv import load_dotenv
+load_dotenv()
 
 # Constants
 PASSPORT_FIELD_SELECTOR = "input[formcontrolname='passportNo']"

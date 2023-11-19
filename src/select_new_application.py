@@ -5,6 +5,8 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import TimeoutException
+from dotenv import load_dotenv
+load_dotenv()
 
 
 ROOT_URL = os.environ.get('ROOT_URL')
@@ -31,7 +33,7 @@ def wait_for_form_ready(driver):
     try:
         WebDriverWait(driver, 10).until(
             lambda d: d.current_url == fill_form_url)
-        logger.debug(f"Arrived at the form URL: {fill_form_url}")
+        logger.debug("Arrived at the form URL")
 
         WebDriverWait(driver, 10).until(
             EC.visibility_of_element_located((By.XPATH, CLOSE_BUTTON_XPATH))

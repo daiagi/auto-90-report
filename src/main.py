@@ -27,12 +27,15 @@ def create_webdriver_instance():
     driver = webdriver.Chrome(options=chrome_options)
     return driver
 
-try:
-    driver = create_webdriver_instance()
-    login(driver, email, password, api_key_2captcha)
-    select_new_application(driver)
-    fill_form(driver)
+def main():
+    try:
+        driver = create_webdriver_instance()
+        login(driver, email, password, api_key_2captcha)
+        select_new_application(driver)
+        fill_form(driver)
 
-finally:
-    driver.quit()
-    logger.info("Driver quit.")
+    finally:
+        driver.quit()
+        logger.info("Driver quit.")
+if __name__ == "__main__":
+    main()

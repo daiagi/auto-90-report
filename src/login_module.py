@@ -1,4 +1,6 @@
 import os
+from dotenv import load_dotenv
+load_dotenv()
 
 from selenium.webdriver.common.by import By
 from twocaptcha import TwoCaptcha
@@ -28,6 +30,7 @@ DATA_DIR = Path(__file__).resolve().parent.parent / 'data'
 def save_captcha_image(element: WebElement, filename="captcha.png"):
     path = f"{DATA_DIR}/{filename}"
     element.screenshot(path)
+    logger.debug(f"Captcha image saved to {path}")
     return path
 
 
@@ -61,7 +64,7 @@ def enter_captcha_solution(driver, api_key_2captcha):
         captcha_input_field = driver.find_element(By.ID, CAPTCHA_INPUT_ID)
         captcha_input_field.clear()
         captcha_input_field.send_keys(captcha_solution)
-        logger.debug("Captcha solution entered.")
+        logger.debug(f"Captcha solution entered. -> {captcha_solution}")
         return True
     else:
         logger.error("Failed to get captcha solution.")
@@ -69,9 +72,13 @@ def enter_captcha_solution(driver, api_key_2captcha):
 
 
 def click_login_button(driver):
-    login_button = driver.find_element(By.XPATH, LOGIN_BUTTON_XPATH)
-    login_button.click()
-    logger.debug("Login button clicked.")
+    try:
+        login_button = driver.find_element(By.XPATH, LOGIN_BUTTON_XPATH)
+        login_button.click()
+        logger.debug("Login button clicked.")
+    except Exception as e:
+        logger.error(f"Error clicking login button: {e}")
+        raise
 
 
 def login(driver, email, password, api_key_2captcha, max_retries=5):
