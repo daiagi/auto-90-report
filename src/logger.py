@@ -1,4 +1,3 @@
-import os
 import logging
 import watchtower
 from logging.handlers import RotatingFileHandler

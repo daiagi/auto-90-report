@@ -11,7 +11,7 @@ from pathlib import Path
 
 from selenium.webdriver.support import expected_conditions as EC
 import time
-from logger import logger
+from src.logger import logger
 
 # Root URL
 ROOT_URL = os.environ.get('ROOT_URL')

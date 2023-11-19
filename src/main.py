@@ -2,12 +2,12 @@ import os
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 from dotenv import load_dotenv
-from logger import logger
+from src.logger import logger
 
 
-from login_module import login
-from fill_form_module import fill_form
-from select_new_application import select_new_application
+from src.login_module import login
+from src.fill_form_module import fill_form
+from src.select_new_application import select_new_application
 
 load_dotenv()
 

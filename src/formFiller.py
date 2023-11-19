@@ -5,7 +5,7 @@ from selenium.common.exceptions import TimeoutException, NoSuchElementException
 from selenium.webdriver.remote.webelement import WebElement
 
 import os
-from logger import logger
+from src.logger import logger
 from dotenv import load_dotenv
 load_dotenv()
 
@@ -152,7 +152,8 @@ class PostSubmitActions:
         except NoSuchElementException as e:
             logger.error(f"Error in finding the Confirm button: {e}")
             raise
-        return self
+        logger.info("Form filling process completed.")
+        return "Form submitted successfully."
     
     def wait_for_pdf_page(self):
         try:
